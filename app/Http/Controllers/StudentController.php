@@ -19,16 +19,24 @@ class StudentController extends Controller
     }
 
     public function store(Request $request)
-    {
-        $request->validate([
-            'first_name' => 'required',
-            'last_name' => 'required',
-        ]);
+{
+    $request->validate([
+        'name' => 'required',
+        'last_name' => 'required',
+        'email' => 'required|email|unique:users,email',
+        'password' => 'required|min:6',
+    ]);
 
-        Student::create($request->all());
+    User::create([
+        'name' => $request->name,
+        'last_name' => $request->last_name,
+        'email' => $request->email,
+        'password' => bcrypt($request->password),
+        'role' => 'student',
+    ]);
 
-        return redirect('/students')->with('success', 'Student added successfully.');
-    }
+    return redirect()->route('students.index')->with('success', 'Student added successfully.');
+}
 
     public function edit($id)
     {
