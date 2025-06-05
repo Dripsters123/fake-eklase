@@ -29,5 +29,10 @@ class DatabaseSeeder extends Seeder
             'role' => 'student',
             'password' => 'password',
         ]);
+        $this->call([
+            StudentSeeder::class,
+            SubjectSeeder::class,
+            GradeSeeder::class,
+        ]);
     }
 }
