@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\ProfileUpdateRequest;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -24,19 +25,35 @@ class ProfileController extends Controller
     /**
      * Update the user's profile information.
      */
-    public function update(ProfileUpdateRequest $request): RedirectResponse
+    public function update(Request $request)
     {
-        $request->user()->fill($request->validated());
-
-        if ($request->user()->isDirty('email')) {
-            $request->user()->email_verified_at = null;
+        $request->validate([
+            'name' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'email', 'max:255'],
+            'avatar' => ['nullable', 'image', 'max:2048'],
+        ]);
+    
+        $user = $request->user();
+    
+        // Apstrādā attēla augšupielādi
+        if ($request->hasFile('avatar')) {
+            // Izdzēš iepriekšējo attēlu (ja nepieciešams)
+            if ($user->avatar && Storage::exists($user->avatar)) {
+                Storage::delete($user->avatar);
+            }
+    
+            $path = $request->file('avatar')->store('avatars', 'public');
+            $user->avatar = $path;
         }
-
-        $request->user()->save();
-
-        return Redirect::route('profile.edit')->with('status', 'profile-updated');
+    
+        // Saglabā citus datus
+        $user->name = $request->name;
+        $user->email = $request->email;
+        $user->save();
+    
+        return redirect()->route('profile.edit')->with('status', 'profile-updated');
     }
-
+    
     /**
      * Delete the user's account.
      */
