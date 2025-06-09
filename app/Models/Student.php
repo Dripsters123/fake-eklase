@@ -17,5 +17,4 @@ class Student extends Authenticatable
         });
     }
 
-    // Add any student-specific methods here
 }
