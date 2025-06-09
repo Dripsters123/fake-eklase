@@ -21,8 +21,15 @@
                 <tbody>
                     @forelse ($grades as $grade)
                         <tr class="hover:bg-gray-50">
-                            <td class="px-6 py-4 border-b">
-                                {{ $grade->student->name }} {{ $grade->student->last_name }}
+                            <td class="px-6 py-4 border-b flex items-center space-x-3">
+                                @if($grade->student->profile_photo_path)
+                                    <img src="{{ asset('storage/' . $grade->student->profile_photo_path) }}" alt="Profile" class="w-8 h-8 rounded-full object-cover">
+                                @else
+                                    <div class="w-8 h-8 rounded-full bg-gray-300 flex items-center justify-center text-gray-600">
+                                        {{ strtoupper(substr($grade->student->name, 0, 1)) }}
+                                    </div>
+                                @endif
+                                <span>{{ $grade->student->name }} {{ $grade->student->last_name }}</span>
                             </td>
                             <td class="px-6 py-4 border-b">{{ $grade->subject->subject_name }}</td>
                             <td class="px-6 py-4 border-b">{{ $grade->grade }}</td>

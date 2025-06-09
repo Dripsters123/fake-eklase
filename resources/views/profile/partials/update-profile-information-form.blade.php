@@ -13,9 +13,32 @@
         @csrf
     </form>
 
-    <form method="post" action="{{ route('profile.update') }}" class="mt-6 space-y-6">
+    <form method="post" action="{{ route('profile.update') }}" enctype="multipart/form-data" class="mt-6 space-y-6">
         @csrf
         @method('patch')
+
+        <!-- ADD THIS PROFILE PHOTO UPLOAD BLOCK HERE -->
+        <div>
+            <x-input-label for="profile_photo" :value="__('Profile Photo')" />
+            <div class="mt-2 flex items-center">
+                @if ($user->profile_photo_path)
+                    <img src="{{ asset('storage/' . $user->profile_photo_path) }}" alt="{{ $user->name }}" class="rounded-full h-16 w-16 object-cover mr-4">
+                @else
+                    <div class="rounded-full h-16 w-16 bg-gray-200 flex items-center justify-center mr-4 text-gray-400">
+                        <!-- Placeholder icon -->
+                        <svg class="h-8 w-8" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M5.121 17.804A13.945 13.945 0 0112 15c2.69 0 5.18.89 7.121 2.804M12 12a4 4 0 100-8 4 4 0 000 8z" />
+                        </svg>
+                    </div>
+                @endif
+
+                <input type="file" name="profile_photo" id="profile_photo" class="ml-4">
+            </div>
+            @error('profile_photo')
+                <p class="text-red-600 text-sm mt-2">{{ $message }}</p>
+            @enderror
+        </div>
+        <!-- END PROFILE PHOTO UPLOAD BLOCK -->
 
         <div>
             <x-input-label for="name" :value="__('Name')" />
