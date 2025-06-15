@@ -19,6 +19,7 @@ class DashboardController extends Controller
 {
     public function dashboard(Request $request)
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
     {
         $user = Auth::user();
         $subjects = Subject::all();
@@ -48,6 +49,24 @@ class DashboardController extends Controller
         $grades = $query->orderBy('created_at', 'desc')->paginate(10);
 
         return view('dashboard', compact('grades', 'subjects', 'user'));
+=======
+{
+    $user = Auth::user();
+
+    $query = Grade::with(['student', 'subject']);
+
+    // Students see only their own grades
+    if ($user->role === 'student') {
+        $query->where('student_id', $user->id);
+    } else {
+        // Teachers can filter by student name
+        if ($request->filled('student_name')) {
+            $query->whereHas('student', function ($q) use ($request) {
+                $q->where('name', 'like', '%' . $request->student_name . '%')
+                  ->orWhere('last_name', 'like', '%' . $request->student_name . '%');
+            });
+        }
+>>>>>>> Stashed changes
 =======
 {
     $user = Auth::user();

@@ -1,5 +1,6 @@
 <x-app-layout>
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
     <div class="container mx-auto p-6">
         <h1 class="text-2xl font-semibold mb-4">Atzīmju saraksts</h1>
 
@@ -16,6 +17,8 @@
                 >
             </div>
 =======
+=======
+>>>>>>> Stashed changes
     <div class="container mx-auto p-4">
        
         @if ($user->role === 'teacher')

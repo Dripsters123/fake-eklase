@@ -18,11 +18,24 @@
 
                     <x-nav-link :href="route('grades.index')" :active="request()->routeIs('grades.*')">
                         {{ __('Pievienot atzīmes') }}
+<<<<<<< Updated upstream
                     </x-nav-link>
                     @endif
                     @if (Auth::user()?->role === 'teacher')
                     <x-nav-link :href="route('grades.average')" :active="request()->routeIs('grades.average')">
                         {{ __('Vidējā atzīme priekšmetos') }}
+=======
+                    </x-nav-link>
+                    @endif
+                    @if (Auth::user()?->role === 'teacher')
+                    <x-nav-link :href="route('grades.average')" :active="request()->routeIs('grades.average')">
+                        {{ __('Vidējā atzīme priekšmetos') }}
+                    </x-nav-link>
+                    @endif
+                    @if (Auth::user()?->role === 'teacher')
+                    <x-nav-link :href="route('subjects.index')" :active="request()->routeIs('subjects.*')">
+                        {{ __('Priekšmeti') }}
+>>>>>>> Stashed changes
                     </x-nav-link>
 
                     <x-nav-link :href="route('subjects.index')" :active="request()->routeIs('subjects.*')">
@@ -100,12 +113,25 @@
                 {{ __('Dashboard') }}
             </x-responsive-nav-link>
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 
             <x-responsive-nav-link :href="route('grades.index')" :active="request()->routeIs('grades.*')">
                 {{ __('Grades') }}
             </x-responsive-nav-link>
 
 =======
+=======
+            @if (Auth::user()?->role === 'teacher')
+                    <x-nav-link :href="route('grades.index')" :active="request()->routeIs('grades.*')">
+                        {{ __('Pievienot atzīmes') }}
+                    </x-nav-link>
+                    @endif
+            @if (Auth::user()?->role === 'teacher')
+                    <x-nav-link :href="route('grades.average')" :active="request()->routeIs('grades.average')">
+                        {{ __('Vidējā atzīme priekšmetos') }}
+                    </x-nav-link>
+                    @endif
+>>>>>>> Stashed changes
             @if (Auth::user()?->role === 'teacher')
                     <x-nav-link :href="route('grades.index')" :active="request()->routeIs('grades.*')">
                         {{ __('Pievienot atzīmes') }}

@@ -59,6 +59,9 @@ Route::middleware(['auth', 'role:teacher'])->group(function () {
     Route::get('/grades/export/average/excel', [GradeController::class, 'exportAverageExcel'])->name('grades.export.average.excel');
     Route::get('/grades/export/average/pdf', [GradeController::class, 'exportAveragePdf'])->name('grades.export.average.pdf');
 });
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 
 Route::get('/grades/export/excel', [GradeController::class, 'exportExcel'])->name('grades.export.excel');
