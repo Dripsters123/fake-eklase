@@ -5,6 +5,7 @@ use App\Http\Controllers\GradeController;
 use App\Http\Controllers\SubjectController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\NotificationController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -36,6 +37,7 @@ Route::put('/students/{id}', [StudentController::class, 'update'])->name('studen
 Route::delete('/students/{id}', [StudentController::class, 'destroy'])->name('students.destroy');
 
 
+<<<<<<< Updated upstream
 
 Route::get('/grades', [GradeController::class, 'index'])->name('grades.index');
 Route::get('/grades/create', [GradeController::class, 'create'])->name('grades.create');
@@ -43,5 +45,27 @@ Route::post('/grades', [GradeController::class, 'store'])->name('grades.store');
 Route::get('/grades/{id}/edit', [GradeController::class, 'edit'])->name('grades.edit');
 Route::put('/grades/{id}', [GradeController::class, 'update'])->name('grades.update');
 Route::delete('/grades/{id}', [GradeController::class, 'destroy'])->name('grades.destroy');
+=======
+    // Grades
+    Route::get('/grades', [GradeController::class, 'index'])->name('grades.index');
+    Route::get('/grades/create', [GradeController::class, 'create'])->name('grades.create');
+    Route::post('/grades', [GradeController::class, 'store'])->name('grades.store');
+    Route::get('/grades/{id}/edit', [GradeController::class, 'edit'])->name('grades.edit');
+    Route::put('/grades/{id}', [GradeController::class, 'update'])->name('grades.update');
+    Route::delete('/grades/{id}', [GradeController::class, 'destroy'])->name('grades.destroy');
+});
+Route::middleware(['auth', 'role:teacher'])->group(function () {
+    Route::get('/grades/average', [GradeController::class, 'averageGrades'])->name('grades.average');
+    Route::get('/grades/export/average/excel', [GradeController::class, 'exportAverageExcel'])->name('grades.export.average.excel');
+    Route::get('/grades/export/average/pdf', [GradeController::class, 'exportAveragePdf'])->name('grades.export.average.pdf');
+});
+>>>>>>> Stashed changes
 
+Route::get('/grades/export/excel', [GradeController::class, 'exportExcel'])->name('grades.export.excel');
+Route::get('/grades/export/pdf', [GradeController::class, 'exportPdf'])->name('grades.export.pdf');
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('/notifications', [NotificationController::class, 'index'])->name('notifications.index');
+    Route::delete('/notifications/{id}', [NotificationController::class, 'destroy'])->name('notifications.destroy');
+});
 require __DIR__.'/auth.php';

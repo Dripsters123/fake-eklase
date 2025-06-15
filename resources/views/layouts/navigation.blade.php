@@ -17,18 +17,32 @@
                     </x-nav-link>
 
                     <x-nav-link :href="route('grades.index')" :active="request()->routeIs('grades.*')">
-                        {{ __('Grades') }}
+                        {{ __('Pievienot atzīmes') }}
+                    </x-nav-link>
+                    @endif
+                    @if (Auth::user()?->role === 'teacher')
+                    <x-nav-link :href="route('grades.average')" :active="request()->routeIs('grades.average')">
+                        {{ __('Vidējā atzīme priekšmetos') }}
                     </x-nav-link>
 
                     <x-nav-link :href="route('subjects.index')" :active="request()->routeIs('subjects.*')">
-                        {{ __('Subjects') }}
+                        {{ __('Priekšmeti') }}
                     </x-nav-link>
 
                     @if (Auth::user()?->role === 'teacher')
                         <x-nav-link :href="route('students.index')" :active="request()->routeIs('students.*')">
-                            {{ __('Students') }}
+                            {{ __('Studenti') }}
                         </x-nav-link>
                     @endif
+                    <x-nav-link :href="route('notifications.index')" :active="request()->routeIs('notifications.index')">
+    <div class="relative inline-flex items-center">
+        <span>{{ __('Paziņojumi') }}</span>
+
+        @if ($unreadNotifications > 0)
+            <span class="absolute top-0 right-0 inline-block w-2 h-2 bg-red-600 rounded-full"></span>
+        @endif
+    </div>
+</x-nav-link>
                 </div>
             </div>
 
@@ -85,21 +99,44 @@
             <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                 {{ __('Dashboard') }}
             </x-responsive-nav-link>
+<<<<<<< Updated upstream
 
             <x-responsive-nav-link :href="route('grades.index')" :active="request()->routeIs('grades.*')">
                 {{ __('Grades') }}
             </x-responsive-nav-link>
 
+=======
+            @if (Auth::user()?->role === 'teacher')
+                    <x-nav-link :href="route('grades.index')" :active="request()->routeIs('grades.*')">
+                        {{ __('Pievienot atzīmes') }}
+                    </x-nav-link>
+                    @endif
+            @if (Auth::user()?->role === 'teacher')
+                    <x-nav-link :href="route('grades.average')" :active="request()->routeIs('grades.average')">
+                        {{ __('Vidējā atzīme priekšmetos') }}
+                    </x-nav-link>
+                    @endif
+            @if (Auth::user()?->role === 'teacher')
+>>>>>>> Stashed changes
             <x-responsive-nav-link :href="route('subjects.index')" :active="request()->routeIs('subjects.*')">
-                {{ __('Subjects') }}
+                {{ __('Priekšmeti') }}
             </x-responsive-nav-link>
 
             @if (Auth::user()?->role === 'teacher')
                 <x-responsive-nav-link :href="route('students.index')" :active="request()->routeIs('students.*')">
-                    {{ __('Students') }}
+                    {{ __('Studenti') }}
                 </x-responsive-nav-link>
             @endif
         </div>
+        <x-nav-link :href="route('notifications.index')" :active="request()->routeIs('notifications.index')">
+    <div class="relative inline-flex items-center">
+        <span>{{ __('Paziņojumi') }}</span>
+
+        @if ($unreadNotifications > 0)
+            <span class="absolute top-0 right-0 inline-block w-2 h-2 bg-red-600 rounded-full"></span>
+        @endif
+    </div>
+</x-nav-link>
 
         <!-- Responsive Settings Options -->
         <div class="pt-4 pb-1 border-t border-gray-200">
