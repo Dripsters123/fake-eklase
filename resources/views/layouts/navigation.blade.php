@@ -15,39 +15,24 @@
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                         {{ __('Dashboard') }}
                     </x-nav-link>
-
+                    @if (Auth::user()?->role === 'teacher')
                     <x-nav-link :href="route('grades.index')" :active="request()->routeIs('grades.*')">
                         {{ __('Pievienot atzīmes') }}
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
+
                     </x-nav-link>
                     @endif
                     @if (Auth::user()?->role === 'teacher')
                     <x-nav-link :href="route('grades.average')" :active="request()->routeIs('grades.average')">
                         {{ __('Vidējā atzīme priekšmetos') }}
-=======
-=======
->>>>>>> Stashed changes
-                    </x-nav-link>
-                    @endif
-                    @if (Auth::user()?->role === 'teacher')
-                    <x-nav-link :href="route('grades.average')" :active="request()->routeIs('grades.average')">
-                        {{ __('Vidējā atzīme priekšmetos') }}
+
                     </x-nav-link>
                     @endif
                     @if (Auth::user()?->role === 'teacher')
                     <x-nav-link :href="route('subjects.index')" :active="request()->routeIs('subjects.*')">
                         {{ __('Priekšmeti') }}
-<<<<<<< Updated upstream
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
-                    </x-nav-link>
 
-                    <x-nav-link :href="route('subjects.index')" :active="request()->routeIs('subjects.*')">
-                        {{ __('Priekšmeti') }}
                     </x-nav-link>
-
+                    @endif
                     @if (Auth::user()?->role === 'teacher')
                         <x-nav-link :href="route('students.index')" :active="request()->routeIs('students.*')">
                             {{ __('Studenti') }}
@@ -69,14 +54,27 @@
             <div class="hidden sm:flex sm:items-center sm:ms-6">
                 <x-dropdown align="right" width="48">
                     <x-slot name="trigger">
-                        <button class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition ease-in-out duration-150">
-                            <div>{{ Auth::user()?->name ?? 'Guest' }} {{ Auth::user()?->last_name ?? '' }}</div>
-                            <div class="ms-1">
-                                <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
-                                    <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
-                                </svg>
-                            </div>
-                        </button>
+                    <button class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition ease-in-out duration-150">
+    <div class="flex items-center space-x-2">
+        {{-- Avatar Image --}}
+        @if (Auth::user()?->avatar)
+            <img src="{{ asset('storage/' . Auth::user()->avatar) }}" alt="Avatar" class="w-8 h-8 rounded-full object-cover">
+        @else
+            {{-- Fallback icon or initials --}}
+            <div class="w-8 h-8 rounded-full bg-gray-300 flex items-center justify-center text-white text-sm">
+                {{ strtoupper(substr(Auth::user()->name, 0, 1)) }}
+            </div>
+        @endif
+        <span>{{ Auth::user()?->name ?? 'Guest' }} {{ Auth::user()?->last_name ?? '' }}</span>
+    </div>
+
+    <div class="ms-1">
+        <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+            <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+        </svg>
+    </div>
+</button>
+
                     </x-slot>
 
                     <x-slot name="content">
@@ -118,39 +116,13 @@
             <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                 {{ __('Dashboard') }}
             </x-responsive-nav-link>
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
 
+            @if (Auth::user()?->role === 'teacher')
             <x-responsive-nav-link :href="route('grades.index')" :active="request()->routeIs('grades.*')">
                 {{ __('Grades') }}
             </x-responsive-nav-link>
+            @endif
 
-=======
-=======
-=======
-            @if (Auth::user()?->role === 'teacher')
-                    <x-nav-link :href="route('grades.index')" :active="request()->routeIs('grades.*')">
-                        {{ __('Pievienot atzīmes') }}
-                    </x-nav-link>
-                    @endif
-            @if (Auth::user()?->role === 'teacher')
-                    <x-nav-link :href="route('grades.average')" :active="request()->routeIs('grades.average')">
-                        {{ __('Vidējā atzīme priekšmetos') }}
-                    </x-nav-link>
-                    @endif
->>>>>>> Stashed changes
-            @if (Auth::user()?->role === 'teacher')
-                    <x-nav-link :href="route('grades.index')" :active="request()->routeIs('grades.*')">
-                        {{ __('Pievienot atzīmes') }}
-                    </x-nav-link>
-                    @endif
-            @if (Auth::user()?->role === 'teacher')
-                    <x-nav-link :href="route('grades.average')" :active="request()->routeIs('grades.average')">
-                        {{ __('Vidējā atzīme priekšmetos') }}
-                    </x-nav-link>
-                    @endif
->>>>>>> Stashed changes
             @if (Auth::user()?->role === 'teacher')
                     <x-nav-link :href="route('grades.index')" :active="request()->routeIs('grades.*')">
                         {{ __('Pievienot atzīmes') }}
@@ -162,11 +134,11 @@
                     </x-nav-link>
                     @endif
             @if (Auth::user()?->role === 'teacher')
->>>>>>> Stashed changes
+
             <x-responsive-nav-link :href="route('subjects.index')" :active="request()->routeIs('subjects.*')">
                 {{ __('Priekšmeti') }}
             </x-responsive-nav-link>
-
+            @endif
             @if (Auth::user()?->role === 'teacher')
                 <x-responsive-nav-link :href="route('students.index')" :active="request()->routeIs('students.*')">
                     {{ __('Studenti') }}
