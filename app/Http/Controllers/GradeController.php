@@ -35,7 +35,16 @@ class GradeController extends Controller
             'student_id' => 'required|exists:users,id',
             'subject_id' => 'required|exists:subjects,id',
             'grade' => 'required|integer|min:1|max:10',
-            'date' => 'required|date|before_or_equal:today|after_or_equal:today',
+            'date' => [
+                'required',
+                'date',
+                function ($attribute, $value, $fail) {
+                    $submittedDate = \Carbon\Carbon::parse($value)->toDateString();
+                    if ($submittedDate !== now()->toDateString()) {
+                        $fail('The date must be today.');
+                    }
+                },
+            ],
         ]);
 
         $grade = Grade::create($request->all());
@@ -60,31 +69,33 @@ class GradeController extends Controller
     public function update(Request $request, $id)
     {
         $grade = Grade::findOrFail($id);
-    
+
         $request->validate([
             'student_id' => 'required|exists:users,id',
             'subject_id' => 'required|exists:subjects,id',
             'grade' => 'required|integer|min:1|max:10',
-            'date' => 'required|date',
+            'date' => [
+                'required',
+                'date',
+                function ($attribute, $value, $fail) {
+                    $submittedDate = \Carbon\Carbon::parse($value)->toDateString();
+                    if ($submittedDate !== now()->toDateString()) {
+                        $fail('The date must be today.');
+                    }
+                },
+            ],
         ]);
-    
-        // Manually validate date equals today (ignore time)
-        $inputDate = \Carbon\Carbon::parse($request->date)->toDateString();
-        if ($inputDate !== now()->toDateString()) {
-            return back()->withErrors(['date' => 'The date must be today only.'])->withInput();
-        }
-    
+
         $grade->update($request->all());
-    
+
         $student = $grade->student;
         $teacher = auth()->user();
         $action = 'updated';
-    
+
         $student->notify(new GradeChangedNotification($action, $grade, $teacher));
-    
+
         return redirect()->route('grades.index')->with('success', 'Grade updated');
     }
-    
 
     public function destroy($id)
     {
@@ -96,7 +107,7 @@ class GradeController extends Controller
 
         $student->notify(new GradeChangedNotification('deleted', $grade, $teacher));
 
-        return redirect()->route('grades.index')->with('success', 'Grade deleted');
+        return redirect()->route('dashboard')->with('success', 'Atzīme izdzēsta');
     }
 
     public function exportExcel(Request $request)

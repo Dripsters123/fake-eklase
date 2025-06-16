@@ -19,14 +19,34 @@ class SubjectController extends Controller
     }
 
     public function store(Request $request)
-    {
-        $request->validate([
-            'subject_name' => 'required'
-        ]);
+{
+    $request->validate([
+        'subject_name' => [
+            'required',
+            function ($attribute, $value, $fail) {
+                // Normalize: trim, lowercase, collapse multiple spaces
+                $normalized = preg_replace('/\s+/', ' ', strtolower(trim($value)));
 
-        Subject::create($request->all());
-        return redirect('/subjects')->with('success', 'Subject added.');
-    }
+                // Check if a similar subject already exists
+                $exists = Subject::all()->contains(function ($subject) use ($normalized) {
+                    $existingNormalized = preg_replace('/\s+/', ' ', strtolower(trim($subject->subject_name)));
+                    return $existingNormalized === $normalized;
+                });
+
+                if ($exists) {
+                    $fail('Tāds priekšmets jau eksistē.');
+                }
+            }
+        ]
+    ]);
+
+    Subject::create([
+        'subject_name' => preg_replace('/\s+/', ' ', trim($request->subject_name)), // optional: clean name
+    ]);
+
+    return redirect('/subjects')->with('success', 'Priekšmets pievienots.');
+}
+
 
     public function edit($id)
     {
@@ -37,9 +57,32 @@ class SubjectController extends Controller
     public function update(Request $request, $id)
     {
         $subject = Subject::findOrFail($id);
-        $subject->update($request->all());
+    
+        $request->validate([
+            'subject_name' => [
+                'required',
+                function ($attribute, $value, $fail) use ($id) {
+                    $normalized = preg_replace('/\s+/', ' ', strtolower(trim($value)));
+    
+                    $exists = Subject::where('id', '!=', $id)->get()->contains(function ($subject) use ($normalized) {
+                        $existingNormalized = preg_replace('/\s+/', ' ', strtolower(trim($subject->subject_name)));
+                        return $existingNormalized === $normalized;
+                    });
+    
+                    if ($exists) {
+                        $fail('Tāds priekšmets jau eksistē.');
+                    }
+                }
+            ]
+        ]);
+    
+        $subject->update([
+            'subject_name' => preg_replace('/\s+/', ' ', trim($request->subject_name)),
+        ]);
+    
         return redirect('/subjects')->with('success', 'Subject updated.');
     }
+    
 
     public function destroy($id)
     {
